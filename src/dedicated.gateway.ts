@@ -1,6 +1,6 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
-@WebSocketGateway(3030)
+@WebSocketGateway(3030, { namespace: 'bar' })
 export class DedicatedGateway {
 	@SubscribeMessage('message')
 	handleMessage(): string {
