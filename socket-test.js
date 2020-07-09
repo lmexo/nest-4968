@@ -14,15 +14,18 @@ async function test() {
 			rej(e);
 		});
 	});
-	console.log("\n\n\nUpgrading a connection at port 3000 - this should crash the server");
+	console.log("\nUpgrading a connection at port 3000 - this should crash the server");
 	await new Promise(res => {
 		const sock = new WebSocket('ws://localhost:3000/foo');
 		sock.on('open', () => {
-			console.log('Socket connection opened, but expected to crash...');
-			res(true);
+			console.log('Socket connection opened on port 3000');
 		});
 		sock.on('error', () => {
 			console.error('Server crashed (probably)');
+			res(true);
+		});
+		sock.on('close', () => {
+			console.log('Socket connection closed unexpectedly - probably the server crashed.');
 			res(true);
 		});
 	});
